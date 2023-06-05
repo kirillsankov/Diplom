@@ -1,45 +1,15 @@
-import React from 'react';
-import {useEffect, useRef, useState} from "@types/react";
+import React, {useEffect} from 'react';
+import {useRef} from "react";
+import {useAnimText} from "../hook/useAnimText";
 
-const P1Anim = ({children, ...props}) => {
+const PAnim = ({children, ...props}) => {
     const ref = useRef();
 
-    const [animString, setAnimString] = useState('');
-
-    useEffect(() => {
-        console.log(ref.current);
-        console.log(children);
-        seeString(children, ref.current)
-    }, [])
-
-    async function animateChar(string) {
-        let currentString = '';
-        let time = 200;
-        let step = 200;
-        for(let char of string) {
-            setTimeout(() => {
-                currentString += char;
-                setAnimString(currentString);
-            }, time += step) ;
-        }
-    }
-
-
-    function seeString(string, el) {
-        let observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    observer.disconnect();
-                    animateChar(string)
-                }
-            })
-        }, { threshold: 0.5 })
-        observer.observe(el);
-    }
+    const animString = useAnimText(children, ref, 700, 50);
 
     return (
-        <p1 ref={ref} {...props}>{animString}</h1>
+        <p ref={ref} {...props}>{animString}</p>
     );
 };
 
-export default P1Anim;
+export default PAnim;

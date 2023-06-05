@@ -1,0 +1,14 @@
+.task__wrapper {
+    border: 2px solid skyblue;
+    padding: 20px 32px;
+    margin-bottom: 32px;
+}
+.task__container {
+    padding: 120px 0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.title {
+    text-align: center;
+    margin-bottom: 32px;
+}

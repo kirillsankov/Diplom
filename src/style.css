@@ -1,0 +1,28 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.main {
+    flex: 1 1 auto;
+}
+
+.container {
+    max-width: 1296px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+img {
+    width: 100%;
+    height: 100%    ;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+body, html, #root {
+    height: 100%;
+}

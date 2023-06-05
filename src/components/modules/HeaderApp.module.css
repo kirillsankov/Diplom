@@ -1,0 +1,11 @@
+.header {
+    width: 100%;
+    min-height: 60px;
+    background: lightblue;
+}
+
+.logo {
+    width: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}

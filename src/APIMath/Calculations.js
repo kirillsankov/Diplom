@@ -1,150 +1,111 @@
-export class Calculations {
-    randomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
 
-    averageTimeQueue(a, aPlus, b, bPlus, c) {
-        // Генератор случайных чисел в диапазоне [min, max]
 
-// Время прихода каждого пациента
-        let arrivalTimes = [];
-        for (let i = 0; i < 180; i++) {
-            let arrivalTime = i + this.randomInt(a - aPlus, a + aPlus); // интервалы приходов пациентов 17±7 минут
-            arrivalTimes.push(arrivalTime);
-        }
-// Время ожидания каждого пациента в очереди
-        let waitingTimes = [];
-// Время начала работы врача
-        let currentTime = 0;
+export default class Calculations {
 
-        while (currentTime < c * 60) {
-            if (arrivalTimes.length === 0) {
-                break;
-            }
 
-            let nextArrivalTime = arrivalTimes[0];
-            let nextEndTime = currentTime + this.randomInt(b - bPlus, b + bPlus); // время приема 16±4 минут
+    static test() {
 
-            if (nextArrivalTime > currentTime) {
-                currentTime = nextArrivalTime;
-            } else {
-                waitingTimes.push(currentTime - nextArrivalTime);
-                currentTime = nextEndTime;
-                arrivalTimes.shift();
-            }
-        }
-        let averageWaitingTime = waitingTimes.reduce((a, b) => a + b, 0) / waitingTimes.length;
-        return averageWaitingTime; // время ожидания в минутах
-    }
+        function getRandomNumber(min, max) {
+// Вычисляем случайное число в диапазоне [min, max]
+            const randomNumber = Math.random() * (max - min + 1) + min;
 
-    payloadRatio(a, aPlus, b, bPlus, c) {
-
-// Время работы клиники в минутах
-        const clinicWorkingTime = 3 * c;
-
-// Инициализируем начальные значения
-        let patientsServed = 0;
-        let totalServiceTime = 0;
-        let currentTime = 0;
-        let queue = [];
-
-// Функция для добавления пациента в очередь
-        function addPatientToQueue() {
-            const arrivalTime = currentTime;
-            const serviceTime = this.randomInt(b - bPlus, b + bPlus); // Время обслуживания от 16±4 (12) до 16±4 (20) минут
-            queue.push({arrivalTime, serviceTime});
+// Округляем число до ближайшего целого
+            return Math.floor(randomNumber);
         }
 
-// Промоделируем работу клиники в течение 3 часов
-        while (currentTime < clinicWorkingTime) {
-            // Добавляем пациента в очередь, если его время прихода наступило
-            if (this.randomInt(a - aPlus, a + aPlus) < currentTime) { // Интервалы приходов от 17±7 (10) до 17±7 (24) минут
-                addPatientToQueue();
-            }
+        let a = 17;
+        let b = 16;
+        let c = 3;
 
-            // Обслуживаем пациента, если врач свободен и в очереди есть пациенты
-            if (queue.length > 0 && queue[0].arrivalTime + queue[0].serviceTime <= currentTime) {
-                const patient = queue.shift();
-                patientsServed++;
-                totalServiceTime += currentTime - patient.arrivalTime;
-            }
+        const simulationTime = c * 60; // Время моделирования в минутах (3 часа)
+        const arrivalIntervalMin = a - 7 ; // Минимальный интервал прихода пациентов в минутах
+        const arrivalIntervalMax = a + 7 ; // Максимальный интервал прихода пациентов в минутах
+        const consultationTimeMin = b - 4 ; // Минимальное время приема в минутах
+        const consultationTimeMax = b + 4 ; // Максимальное время приема в минутах
 
-            currentTime++;
-        }
+        let utilizationRatioRez = 0;
+        let averageWaitTimeRez = 0;
+        let countRun = 10000;
+        for(let i = 0; i < countRun; i++) {
+            let currentTime = 0;
+            let queue = 0;
+            let queueArr = [];
+            let personTime = [];
+            let personCount = 0;
 
-// Рассчитываем коэффициент полезной загрузки
-        const clinicUtilization = totalServiceTime / (patientsServed * b); // 16 - среднее время приема пациента в минутах
+            let count = 0;
 
-        return clinicUtilization;
-    }
+            let isBusy = true;
+            while (currentTime < simulationTime) {
+                count++;
 
-    leghtQueue(a, aPlus, b, bPlus, c) {
-        // Интервалы прихода пациентов
-        const arrivalInterval = {
-            min: a - aPlus, // Минимальный интервал в минутах
-            max: a + aPlus // Максимальный интервал в минутах
-        };
+                let person = getRandomNumber(arrivalIntervalMin, arrivalIntervalMax); // интервал прихода транзакта
 
-// Время приема пациента
-        const serviceTime = {
-            min: b - bPlus, // Минимальное время в минутах
-            max: b + bPlus // Максимальное время в минутах
-        };
+                currentTime += person; // текущее время + интервал транзакта
 
-// Время работы врача в минутах
-        const workTime = c * 60; // 3 часа
+                let time = getRandomNumber(consultationTimeMin, consultationTimeMax); // время  обслуживания текущего транзакта
 
-        let queue = []; // очередь
-        let currentTime = 0; // текущее время
-        let totalQueueLength = 0; // общая длина очереди
-        let numOfCustomers = 0; // количество пациентов
+                personTime.push({
+                    timeExit: currentTime + time,
+                    timeInput: currentTime,
+                    person,
+                    time,
+                }); // добавляется транзакт в массив, который обрабатывается в будущем
+
+                /*debugger;*/
 
 
-// Генерируем время прихода первого пациента
-        let nextArrivalTime = this.randomInt(arrivalInterval.min, arrivalInterval.max);
-
-// Промоделируем работу врача в течение заданного времени
-        while (currentTime < workTime) {
-            // Если пришел новый пациент
-            if (nextArrivalTime <= currentTime) {
-                // Генерируем время приема пациента
-                const serviceDuration =  this.randomInt(serviceTime.min, serviceTime.max);
-
-                // Добавляем пациента в очередь
-                queue.push({
-                    arrivalTime: nextArrivalTime,
-                    serviceDuration: serviceDuration
-                });
-
-                // Генерируем время прихода следующего пациента
-                nextArrivalTime +=  this.randomInt(arrivalInterval.min, arrivalInterval.max);
-            }
-
-            // Если в очереди есть пациенты, обслуживаем первого
-            if (queue.length > 0) {
-                const customer = queue[0];
-
-                // Если пациент уже был обслужен
-                if (currentTime >= customer.arrivalTime + customer.serviceDuration) {
-                    // Удаляем пациента из очереди
-                    queue.shift();
-
-                    // Увеличиваем счетчик обслуженных пациентов
-                    numOfCustomers++;
+                if(personTime[0].timeExit <= currentTime) {
+                    isBusy = true;
+                    if(personTime[1].isQueu) queue--;
+                    count--;
+                    personTime[0].queoExit = currentTime;
+                    personTime.shift();
+                    personTime[0].timeExit = currentTime + time;
                 }
+
+                if(personTime.length > 1) {
+                    queue++;
+                    personTime[personTime.length - 1].isQueu = true;
+                    personTime[personTime.length - 1].queoInput = currentTime;
+                    queueArr.push(Object.assign({}, personTime[personTime.length - 1])) ;
+                    isBusy = false;
+                }
+
+
+                /*if(personTime.length) { // текущее количество транзактов проверяется , если не ноль то идем дальше
+                    if(personTime[0] <= currentTime) { // проверятеся пора ли выйти первому транзакту из очереди если да, то
+                        if(queue){ //  если очередь не равна нулю, то вычитаем единицу из очереди
+                            queue--;
+                            arrTime[count] = currentTime - arrTime[count];
+                            count++;
+                        } else { // если равнна 0, когда транзакт выходит, то значит транзакт прошел обслуживание с 0 очередью
+                            succesPerson++;
+                        }
+                        personTime.shift(); // транзакт удаляеся из обслужваемы
+
+                    } else { //  если транзакту не пора выходить, то увеличиваем очередь
+                        queue++;
+                        arrTime[count] = currentTime;
+                    }
+                }*/
+
+
+
+
+
+
+                if(currentTime < simulationTime ) personCount++;
+                if(personTime[personTime.length - 1] > currentTime)  personCount--;
             }
-
-            // Увеличиваем время на 1 минуту
-            currentTime++;
-
-            // Увеличиваем общую длину очереди
-            totalQueueLength += queue.length;
+            averageWaitTimeRez += queueArr.length;
+            utilizationRatioRez += personCount;
+            /*console.log(queueArr);
+            console.log(personCount);*/
         }
-
-// Рассчитываем среднюю длину очереди
-        const averageQueueLength = totalQueueLength / workTime;
-
-        console.log("Средняя длина очереди:", averageQueueLength.toFixed(2));
+        console.log(averageWaitTimeRez / countRun);
+        console.log(utilizationRatioRez / countRun);
+        /*console.log((averageWaitTimeRez / countRun).toFixed(3));*/
 
     }
 }
