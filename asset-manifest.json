@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Diplom/static/css/main.e659f49a.css",
+    "main.js": "/Diplom/static/js/main.0cc62541.js",
+    "static/media/logo.webp": "/Diplom/static/media/logo.6ca4bf57b2e06cf8fe36.webp",
+    "index.html": "/Diplom/index.html",
+    "main.e659f49a.css.map": "/Diplom/static/css/main.e659f49a.css.map",
+    "main.0cc62541.js.map": "/Diplom/static/js/main.0cc62541.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e659f49a.css",
+    "static/js/main.0cc62541.js"
+  ]
+}
