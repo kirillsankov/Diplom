@@ -1,111 +1,137 @@
-
+import React, {useEffect} from 'react';
 
 export default class Calculations {
 
-
-    static test() {
-
-        function getRandomNumber(min, max) {
-// Вычисляем случайное число в диапазоне [min, max]
-            const randomNumber = Math.random() * (max - min + 1) + min;
-
-// Округляем число до ближайшего целого
-            return Math.floor(randomNumber);
+    static async getResultTask8(program, a,aRange, b, bRange, c) {
+        function  addNumberToProgram(i, program) {
+            let newProgramm = program.replace('a', a)
+                .replace('aRange', aRange)
+                .replace('b', b)
+                .replace('bRAnge', bRange)
+                .replace('simulationTime', c * 60)
+                .replace('I', i);
+            return newProgramm;
         }
 
-        let a = 17;
-        let b = 16;
-        let c = 3;
+        function extractValue(regex, input) {
+            const match = input.match(regex);
 
-        const simulationTime = c * 60; // Время моделирования в минутах (3 часа)
-        const arrivalIntervalMin = a - 7 ; // Минимальный интервал прихода пациентов в минутах
-        const arrivalIntervalMax = a + 7 ; // Максимальный интервал прихода пациентов в минутах
-        const consultationTimeMin = b - 4 ; // Минимальное время приема в минутах
-        const consultationTimeMax = b + 4 ; // Максимальное время приема в минутах
-
-        let utilizationRatioRez = 0;
-        let averageWaitTimeRez = 0;
-        let countRun = 10000;
-        for(let i = 0; i < countRun; i++) {
-            let currentTime = 0;
-            let queue = 0;
-            let queueArr = [];
-            let personTime = [];
-            let personCount = 0;
-
-            let count = 0;
-
-            let isBusy = true;
-            while (currentTime < simulationTime) {
-                count++;
-
-                let person = getRandomNumber(arrivalIntervalMin, arrivalIntervalMax); // интервал прихода транзакта
-
-                currentTime += person; // текущее время + интервал транзакта
-
-                let time = getRandomNumber(consultationTimeMin, consultationTimeMax); // время  обслуживания текущего транзакта
-
-                personTime.push({
-                    timeExit: currentTime + time,
-                    timeInput: currentTime,
-                    person,
-                    time,
-                }); // добавляется транзакт в массив, который обрабатывается в будущем
-
-                /*debugger;*/
-
-
-                if(personTime[0].timeExit <= currentTime) {
-                    isBusy = true;
-                    if(personTime[1].isQueu) queue--;
-                    count--;
-                    personTime[0].queoExit = currentTime;
-                    personTime.shift();
-                    personTime[0].timeExit = currentTime + time;
-                }
-
-                if(personTime.length > 1) {
-                    queue++;
-                    personTime[personTime.length - 1].isQueu = true;
-                    personTime[personTime.length - 1].queoInput = currentTime;
-                    queueArr.push(Object.assign({}, personTime[personTime.length - 1])) ;
-                    isBusy = false;
-                }
-
-
-                /*if(personTime.length) { // текущее количество транзактов проверяется , если не ноль то идем дальше
-                    if(personTime[0] <= currentTime) { // проверятеся пора ли выйти первому транзакту из очереди если да, то
-                        if(queue){ //  если очередь не равна нулю, то вычитаем единицу из очереди
-                            queue--;
-                            arrTime[count] = currentTime - arrTime[count];
-                            count++;
-                        } else { // если равнна 0, когда транзакт выходит, то значит транзакт прошел обслуживание с 0 очередью
-                            succesPerson++;
-                        }
-                        personTime.shift(); // транзакт удаляеся из обслужваемы
-
-                    } else { //  если транзакту не пора выходить, то увеличиваем очередь
-                        queue++;
-                        arrTime[count] = currentTime;
-                    }
-                }*/
-
-
-
-
-
-
-                if(currentTime < simulationTime ) personCount++;
-                if(personTime[personTime.length - 1] > currentTime)  personCount--;
+            if (match && match.length > 1) {
+                return (match[1]);
             }
-            averageWaitTimeRez += queueArr.length;
-            utilizationRatioRez += personCount;
-            /*console.log(queueArr);
-            console.log(personCount);*/
+            return null;
         }
-        console.log(averageWaitTimeRez / countRun);
-        console.log(utilizationRatioRez / countRun);
-        /*console.log((averageWaitTimeRez / countRun).toFixed(3));*/
 
+        async function sendResponse(program) {
+            let response = fetch("https://gpss-server.herokuapp.com", {
+                method: 'POST',
+                body: program,
+            })
+            let rez = await response;
+            let json = await rez.json();
+            if(json.status === 'simulation-error') {
+                return null;
+            }
+            let report = json.report;
+
+            const avgUtilization = extractValue(avgUtilizationRegex, report);
+            const avgContent = extractValue(avgContentRegex, report);
+            const avgTimePerTrans = extractValue(avgTimePerTransRegex, report).split(":")[1];
+
+            return  {
+                utilization: parseFloat(avgUtilization) / 100,
+                content: parseFloat(avgContent),
+                timePerTrans: parseFloat(avgTimePerTrans),
+            }
+
+        }
+
+        const avgUtilizationRegex = /Avg\. utilization: (\d+\.\d+)%/;
+        const avgContentRegex = /Average content: (\d+\.\d+)/;
+        const avgTimePerTransRegex = /Avg\. time\/Trans\.: (\d+\.\d+(?=\n|$))/g;
+
+        let newProgramm;
+
+        let i = 1;
+        newProgramm = addNumberToProgram(i++, program);
+        let work = await sendResponse(newProgramm);
+        console.log(work);
+
+        while(work.content > 10 || work.timePerTrans > 20) {
+            newProgramm = addNumberToProgram(i++, program);
+
+            work = await sendResponse(newProgramm);
+            console.log(work);
+        }
+
+        return --i;
+    }
+
+
+     static async getResult(program, a,aRange, b, bRange, c, cRange, d, dRange, e, parseNumberFn) {
+        function  addNumberToProgram6(program) {
+            let newProgramm = program.replace('a', a)
+                .replace('aRange', aRange)
+                .replace('b', b)
+                .replace('bRAnge', bRange)
+                .replace('simulationTime', c * 60);
+            return newProgramm;
+         }
+         function  addNumberToProgram7(program) {
+             let newProgramm = program.replace('a', a)
+                 .replace('aRange', aRange)
+                 .replace('b', b)
+                 .replace('bRAnge', bRange)
+                 .replace('c', c)
+                 .replace('cRAnge', cRange)
+                 .replace('d', d)
+                 .replace('dRAnge', dRange)
+                 .replace('simulationTime', e * 60);
+             return newProgramm;
+         }
+
+        const avgUtilizationRegex = /Avg\. utilization: (\d+\.\d+)%/;
+        const avgContentRegex = /Average content: (\d+\.\d+)/;
+         const avgTimePerTransRegex = /Avg\. time\/Trans\.: (\d+\.\d+(?=\n|$))/g;
+
+         let newProgramm;
+
+         if(parseNumberFn === 6) {
+             newProgramm = addNumberToProgram6(program);
+         } else if(parseNumberFn === 7) {
+             newProgramm = addNumberToProgram7(program);
+         }
+
+         function extractValue(regex, input) {
+             const match = input.match(regex);
+
+             if (match && match.length > 1) {
+                 return (match[1]);
+             }
+             return null;
+         }
+
+
+        let response = fetch("https://gpss-server.herokuapp.com", {
+            method: 'POST',
+            body: newProgramm,
+        })
+         let rez = await response;
+        let json = await rez.json();
+        if(json.status === 'simulation-error') {
+            return null;
+        }
+        let report = json.report;
+
+        const avgUtilization = extractValue(avgUtilizationRegex, report);
+        const avgContent = extractValue(avgContentRegex, report);
+        const avgTimePerTrans = extractValue(avgTimePerTransRegex, report).split(":")[1];
+
+
+         return {
+             utilization: parseFloat(avgUtilization) / 100,
+             content: parseFloat(avgContent),
+             timePerTrans: parseFloat(avgTimePerTrans),
+         }
     }
 }

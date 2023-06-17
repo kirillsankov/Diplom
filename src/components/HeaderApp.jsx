@@ -10,7 +10,7 @@ const HeaderApp = () => {
                 <BrowserRouter>
                     <Link to="/">
                         <div className={classes.logo}>
-                            <img src={logo} alt="img"/>
+                            <img className={classes.img} src={logo} alt="img"/>
                         </div>
                     </Link>
                 </BrowserRouter>

@@ -3,6 +3,22 @@
     padding: 20px 32px;
     margin-bottom: 32px;
 }
+.task__btBack {
+    color: lightblue;
+    margin-bottom: 32px;
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+}
+.task__btBack:before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-bottom: 1px solid lightblue;
+    border-right: 1px solid lightblue;
+    transform: rotate(135deg);
+}
 .task__container {
     padding: 120px 0;
     max-width: 800px;
@@ -11,4 +27,71 @@
 .title {
     text-align: center;
     margin-bottom: 32px;
+}
+.task__input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid lightblue;
+    padding: 10px 16px;
+}
+.task__input:focus-visible {
+    border: 1px solid lightblue;
+    outline: none;
+}
+.task__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 16px;
+    column-gap: 24px;
+}
+.task__form select option:first-child {
+    display: none;
+}
+.task__label {
+    margin-bottom: 8px;
+}
+.task__form__full {
+    grid-template-columns: 1fr;
+}
+.task__warning {
+    font-size: 14px;
+    color: red;
+    line-height: 100%;
+    letter-spacing: -0.02em;
+    margin-top: -28px;
+    text-align: center;
+    padding: 0 80px;
+    margin-bottom: 32px;
+}
+.task__btn {
+    padding: 16px 32px;
+    background: lightblue;
+    border: none;
+    cursor: pointer;
+    grid-column: 1 / 3;
+}
+
+.task-placeholder {
+    
+}
+
+.preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 1 / 3;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

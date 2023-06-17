@@ -5,7 +5,7 @@ import {useAnimText} from "../hook/useAnimText";
 const PAnim = ({children, ...props}) => {
     const ref = useRef();
 
-    const animString = useAnimText(children, ref, 700, 50);
+    const animString = useAnimText(children, ref, 700, 10);
 
     return (
         <p ref={ref} {...props}>{animString}</p>

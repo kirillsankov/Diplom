@@ -1,0 +1,18 @@
+.container {
+    padding: 16px 32px;
+    border: 2px solid lightblue;
+    border-radius: 5px;
+    display: flex;
+    column-gap: 30px;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
