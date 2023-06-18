@@ -115,7 +115,10 @@ const Task_7 = () => {
 
     return (
         <div className={['container', classes.task__container].join(' ')}>
-            <a onClick={() => route('/task')} className={classes.task__btBack} href="#">Вернутся ко всем задачам</a>
+            <a onClick={(e) => {
+                e.preventDefault();
+                route('/task')
+            }} className={classes.task__btBack} href="#">Вернутся ко всем задачам</a>
             <h1 className={classes.title}>Задача №7</h1>
             <TaskText className={classes.task__wrapper}>
                 {string}
@@ -130,7 +133,7 @@ const Task_7 = () => {
                     <input className={classes.task__input} value={aveTime} onChange={(e) => {setAveTime(e.target.value)}} type="text"/>
                 </div>
                 <div className="">
-                    <p className={classes.task__label}>Средняя сдина очереди</p>
+                    <p className={classes.task__label}>Средняя длина очереди</p>
                     <input className={classes.task__input} value={aveCont} onChange={(e) => {setAveCont(e.target.value)}} type="text"/>
                 </div>
                 <div className="">

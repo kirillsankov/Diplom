@@ -24,7 +24,7 @@ function App() {
                       <Route exact index  path="/task/7" element={<Task_7/>}/>
                       <Route exact index  path="/task/8" element={<Task_8/>}/>
                       <Route exact index  path="/task/9" element={<Task_9/>}/>
-                      <Route exact index  path="/task" element={<TaskList/>}/>
+                      <Route exact index  path="/task/" element={<TaskList/>}/>
                       <Route index  path="/SuccessPage" element={<SuccessPage/>}/>
                   </Routes>
               </HashRouter>

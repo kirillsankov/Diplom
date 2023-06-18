@@ -83,7 +83,10 @@ const Task_6 = () => {
 
     return (
         <div className={['container', classes.task__container].join(' ')}>
-            <a onClick={() => route('/task')} className={classes.task__btBack} href="#">Вернутся ко всем задачам</a>
+            <a onClick={(e) => {
+                e.preventDefault();
+                route('/task')
+            }} className={classes.task__btBack} href="#">Вернутся ко всем задачам</a>
             <h1 className={classes.title}>Задача №8</h1>
             <TaskText className={classes.task__wrapper}>
                 {string}
