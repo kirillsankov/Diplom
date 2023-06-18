@@ -2,7 +2,7 @@
 import React from "react";
 import './style.css'
 import Home from "./pages/Home";
-import {BrowserRouter , Route, Routes, Link} from "react-router-dom";
+import {BrowserRouter, Route, Routes, Link, HashRouter} from "react-router-dom";
 import HeaderApp from "./components/HeaderApp";
 import FooterApp from "./components/FooterApp";
 import SuccessPage from "./pages/SuccessPage";
@@ -17,7 +17,7 @@ function App() {
       <div className='flex-container'>
           <HeaderApp/>
           <main className='main'>
-              <BrowserRouter>
+              <HashRouter>
                   <Routes>
                       <Route index  path="/" element={<Home/>}/>
                       <Route exact index  path="/task/6" element={<Task_6/>}/>
@@ -27,7 +27,7 @@ function App() {
                       <Route exact index  path="/task" element={<TaskList/>}/>
                       <Route index  path="/SuccessPage" element={<SuccessPage/>}/>
                   </Routes>
-              </BrowserRouter>
+              </HashRouter>
           </main>
           <FooterApp/>
       </div>
