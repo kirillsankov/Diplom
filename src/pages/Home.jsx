@@ -12,7 +12,10 @@ const Home = () => {
         <div className={['container', classes.wrapper].join(' ')}>
             <H1Anim className={classes.title}>Привет</H1Anim>
             <PAnim className={classes.description}>Ты зашел на страницу с генератором задач по имитационному моделированию</PAnim>
-            <BtnApp onClick={() => route('/task')}>Начать</BtnApp>
+            <BtnApp onClick={(e) => {
+                e.preventDefault();
+                route('/task')
+            }}>Начать</BtnApp>
         </div>
     );
 };

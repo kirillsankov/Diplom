@@ -4,7 +4,7 @@ import TaskText from "../components/TaskText";
 import Calculations from "../APIMath/Calculations"
 import {useNavigate, useParams} from "react-router-dom";
 
-const Task_6 = () => {
+const Task_8 = ({functionCount},...props) => {
     function randomIntFromInterval(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
@@ -75,6 +75,7 @@ const Task_6 = () => {
         let result = await Calculations.getResultTask8(json.programm ,a, aPlus, b, bPlus, c, null, null, null, null, 8);
         console.log(result);
         if(result + 1 >= parseInt(count) && result - 1 <= parseInt(count)) {
+            functionCount(parseInt(localStorage.getItem('countSuccessAnswer'))  + 1);
             route('/SuccessPage');
         } else {
             setRez(true);
@@ -110,4 +111,4 @@ const Task_6 = () => {
     );
 };
 
-export default Task_6;
+export default Task_8;
