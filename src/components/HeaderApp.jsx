@@ -25,7 +25,8 @@ const HeaderApp = ({count, functionCount}, ...props) => {
         }
     },[count, name])
 
-    function showPopUp() {
+    function showPopUp(e) {
+        e.preventDefault();
         setIsVisiblePopup(false)
     }
 
@@ -38,7 +39,7 @@ const HeaderApp = ({count, functionCount}, ...props) => {
                     </div>
                 </a>
                 <div className={classes.personInfo}>
-                    <a onClick={() => showPopUp()} className={classes.personInfo__link} href="#">{name}</a>
+                    <a onClick={(e) => showPopUp(e)} className={classes.personInfo__link} href="#">{name}</a>
                     <p className={classes.personInfo__count}>{count}</p>
                     {
                         isVisible
