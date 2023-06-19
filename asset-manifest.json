@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Diplom/static/css/main.e659f49a.css",
-    "main.js": "/Diplom/static/js/main.71e1a276.js",
+    "main.css": "/Diplom/static/css/main.9264b51a.css",
+    "main.js": "/Diplom/static/js/main.5dd634ff.js",
     "static/media/logo.webp": "/Diplom/static/media/logo.6ca4bf57b2e06cf8fe36.webp",
     "index.html": "/Diplom/index.html",
-    "main.e659f49a.css.map": "/Diplom/static/css/main.e659f49a.css.map",
-    "main.71e1a276.js.map": "/Diplom/static/js/main.71e1a276.js.map"
+    "main.9264b51a.css.map": "/Diplom/static/css/main.9264b51a.css.map",
+    "main.5dd634ff.js.map": "/Diplom/static/js/main.5dd634ff.js.map"
   },
   "entrypoints": [
-    "static/css/main.e659f49a.css",
-    "static/js/main.71e1a276.js"
+    "static/css/main.9264b51a.css",
+    "static/js/main.5dd634ff.js"
   ]
 }
