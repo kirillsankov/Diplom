@@ -14,6 +14,7 @@ const Home = () => {
             <PAnim className={classes.description}>Ты зашел на страницу с генератором задач по имитационному моделированию</PAnim>
             <BtnApp onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 route('/task')
             }}>Начать</BtnApp>
         </div>

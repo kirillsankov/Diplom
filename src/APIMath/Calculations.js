@@ -2,6 +2,20 @@ import React, {useEffect} from 'react';
 
 export default class Calculations {
 
+    static validateField(str) {
+        let clearStr = str.replace(/\s/g, "");
+        if (clearStr === '') {
+            return false;
+        }
+
+        // Проверяем, что строка состоит только из цифр и одной точки или может начинаться с знака минуса
+        if (!/^[-+]?\d*\.?\d+$/.test(clearStr)) {
+            return false;
+        }
+
+        return true;
+    }
+
     static async getResultTask8(program, a,aRange, b, bRange, c) {
         function  addNumberToProgram(i, program) {
             let newProgramm = program.replace('a', a)

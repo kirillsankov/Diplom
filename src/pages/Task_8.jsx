@@ -3,6 +3,8 @@ import classes from "./modules/Task.module.css";
 import TaskText from "../components/TaskText";
 import Calculations from "../APIMath/Calculations"
 import {useNavigate, useParams} from "react-router-dom";
+import InputApp from "../components/InputApp";
+import ErrorMessage from "../components/ErrorMessage";
 
 const Task_8 = ({functionCount},...props) => {
     function randomIntFromInterval(min, max) {
@@ -23,6 +25,9 @@ const Task_8 = ({functionCount},...props) => {
     const [b, setB] = useState(0);
     const [bPlus, setBPlus] = useState(0);
     const [c, setC] = useState(0);
+
+    const [error, setError] = useState(false);
+    const [messageError, setMessageError] = useState('');
 
     useMemo(() => {
         getJson().then(json => {
@@ -67,9 +72,37 @@ const Task_8 = ({functionCount},...props) => {
             setString(newString);
         }
     }
+    function showError() {
+        setError(true);
+
+        setTimeout(() => {
+            setError(false)
+        }, 5000);
+    }
+
+    function showError(string) {
+        setMessageError(string);
+        setError(true);
+
+        setTimeout(() => {
+            setError(false)
+        }, 5000);
+    }
+    function checkValidate() {
+        let fnCheck = Calculations.validateField;
+        if(!(fnCheck(count))) {
+            showError('Некорректные данные');
+
+            return true;
+        }
+        return false;
+    }
 
    async function checkRezults(e) {
         e.preventDefault();
+       if(checkValidate()) {
+           return;
+       }
        setRez(false);
         let json = await getJson();
         let result = await Calculations.getResultTask8(json.programm ,a, aPlus, b, bPlus, c, null, null, null, null, 8);
@@ -79,11 +112,15 @@ const Task_8 = ({functionCount},...props) => {
             route('/SuccessPage');
         } else {
             setRez(true);
+
+            showError('Задание решено не верно, попробуй еще раз');
         }
     }
 
+
     return (
         <div className={['container', classes.task__container].join(' ')}>
+            <ErrorMessage error={error} message={messageError}/>
             <a onClick={(e) => {
                 e.preventDefault();
                 route('/task')
@@ -96,7 +133,13 @@ const Task_8 = ({functionCount},...props) => {
             <form className={[classes.task__form, classes.task__form__full].join(' ')} action="">
                 <div className="">
                     <p className={classes.task__label}>Введите оптимальное количество заявок:</p>
-                    <input className={classes.task__input} value={count} onChange={(e) => {setCount(e.target.value)}} type="text"/>
+                    <InputApp
+                        maskChar=" "
+                        mask={"9999999999"}
+                        className={classes.task__input}
+                        value={count} onChange={(e) => {setCount(e.target.value)}}
+                        type="text"
+                    />
                 </div>
                 {
                     (rez)

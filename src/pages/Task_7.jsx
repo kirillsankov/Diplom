@@ -3,6 +3,9 @@ import classes from "./modules/Task.module.css";
 import TaskText from "../components/TaskText";
 import Calculations from "../APIMath/Calculations"
 import {useNavigate, useParams} from "react-router-dom";
+import InputApp from "../components/InputApp";
+import SelectApp from "../components/selectApp";
+import ErrorMessage from "../components/ErrorMessage";
 
 const Task_7 = ({functionCount},...props) => {
     function randomIntFromInterval(min, max) {
@@ -17,6 +20,9 @@ const Task_7 = ({functionCount},...props) => {
     const [aveCont, setAveCont] = useState('');
     const [generalAssessment, setGeneralAssessment] = useState('');
     const [rez, setRez] = useState(true);
+
+    const [error, setError] = useState(false);
+    const [messageError, setMessageError] = useState('');
 
     const [a, setA] = useState(0);
     const [aPlus, setAPlus] = useState(0);
@@ -97,8 +103,28 @@ const Task_7 = ({functionCount},...props) => {
         return 'высокая';
     }
 
+    function showError(string) {
+        setMessageError(string);
+        setError(true);
+
+        setTimeout(() => {
+            setError(false)
+        }, 5000);
+    }
+    function checkValidate() {
+        let fnCheck = Calculations.validateField;
+        if(!(fnCheck(util) && fnCheck(aveCont) && fnCheck(aveTime))) {
+            showError('Некорректные данные');
+
+            return true;
+        }
+        return false;
+    }
    async function checkRezults(e) {
         e.preventDefault();
+        if(checkValidate()) {
+            return;
+        }
         setRez(false);
         let json = await getJson();
         let result = await Calculations.getResult(json.programm , a, aPlus, b, bPlus, c, cPlus, d, dPlus, numberE, 7);
@@ -111,11 +137,13 @@ const Task_7 = ({functionCount},...props) => {
             route('/SuccessPage');
         } else {
             setRez(true);
+            showError('Задание решено не верно, попробуй еще раз');
         }
     }
 
     return (
         <div className={['container', classes.task__container].join(' ')}>
+            <ErrorMessage error={error} message={messageError}/>
             <a onClick={(e) => {
                 e.preventDefault();
                 route('/task')
@@ -127,33 +155,67 @@ const Task_7 = ({functionCount},...props) => {
             <form className={classes.task__form} action="">
                 <div className="">
                     <p className={classes.task__label}>Коэффициент полезной загрузки</p>
-                    <input className={classes.task__input} value={util} onChange={(e) => {setUtil(e.target.value)}} type="text"/>
+                    <InputApp
+                        maskChar=" "
+                        mask={"199999999"}
+                        formatChars = {
+                            {   '1': '[0-9]',
+                                '9': '[0-9.]',
+                            }
+                        }
+                        className={classes.task__input}
+                        value={util}
+                        onChange={(e) => {setUtil(e.target.value)}}
+                        type="text"
+                    />
                 </div>
                 <div className="">
                     <p className={classes.task__label}>Среднее время ожидания в очереди</p>
-                    <input className={classes.task__input} value={aveTime} onChange={(e) => {setAveTime(e.target.value)}} type="text"/>
+                    <InputApp
+                        maskChar=" "
+                        mask={"199999999"}
+                        formatChars = {
+                            {   '1': '[0-9]',
+                                '9': '[0-9.]',
+                            }
+                        }
+                        className={classes.task__input}
+                        value={aveTime}
+                        onChange={(e) => {setAveTime(e.target.value)}}
+                        type="text"
+                    />
                 </div>
                 <div className="">
                     <p className={classes.task__label}>Средняя длина очереди</p>
-                    <input className={classes.task__input} value={aveCont} onChange={(e) => {setAveCont(e.target.value)}} type="text"/>
+                    <InputApp
+                        maskChar=" "
+                        mask={"199999999"}
+                        formatChars = {
+                            {   '1': '[0-9]',
+                                '9': '[0-9.]',
+                            }
+                        }
+                        className={classes.task__input}
+                        value={aveCont}
+                        onChange={(e) => {setAveCont(e.target.value)}}
+                        type="text"
+                    />
                 </div>
                 <div className="">
                     <p className={classes.task__label}>Качественная комплексная оценка эффективности</p>
-                    <select className={classes.task__input} value={generalAssessment} onChange={(e) => {setGeneralAssessment(e.target.value)}} name="" id="">
-                        <option value="">Выберите вариант</option>
-                        <option value="высокая">высокая</option>
-                        <option value="выше средней">выше средней</option>
-                        <option value="средняя">средняя</option>
-                        <option value="ниже средней">ниже средней</option>
-                        <option value="низкая">низкая</option>
-                    </select>
+                    <SelectApp
+                        className={classes.task__select}
+                        defaultValue={generalAssessment}
+                        value={generalAssessment}
+                        onChange={setGeneralAssessment}
+                    />
                 </div>
                 {
                     (rez)
                         ? <input className={classes.task__btn} onClick={(e) => checkRezults(e)} type="submit"/>
                         : <div className={classes.preloader}>
                             <div className={classes.loader}></div>
-                    </div>
+                        </div>
                 }
             </form>
 

@@ -1,11 +1,15 @@
 .btn {
-    border-radius: 5%;
+    border-radius: 5px;
     padding: 10px 15px;
     border: 2px solid gray;
-    transition: background-color 0.4s;
+    transition: background-color 0.4s,
+                color 0.4s,
+                border-color 0.4s;
     background-color: transparent;
     cursor: pointer;
 }
 .btn:hover {
     background-color: lightblue;
+    color: white;
+    border-color: lightblue;
 }

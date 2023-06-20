@@ -13,9 +13,10 @@ const HeaderApp = ({count, functionCount}, ...props) => {
     }
 
     let defaultValue =  localStorage.getItem('personName') ?  localStorage.getItem('personName') : 'Анононим';
+    let defaultValueVisible =  localStorage.getItem('visible') ?  'true' : 'false';
     const [isVisible, setIsVisible] = useState(false);
     const [name, setName] = useState(defaultValue);
-    let [isVisiblePopup,setIsVisiblePopup] = useState(true);
+    let [isVisiblePopup,setIsVisiblePopup] = useState(Boolean(localStorage.getItem('visible')));
 
     useMemo(() => {
         if(count > 0 || name !== 'Анононим') {

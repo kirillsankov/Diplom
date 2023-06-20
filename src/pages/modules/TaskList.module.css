@@ -2,12 +2,22 @@
     display: flex;
     flex-direction: column;
     row-gap: 24px;
-    padding: 120px 0;
+    padding: 120px 15px;
 }
 .title {
     margin-bottom: 40px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    width: 400px;
+    max-width: 600px;
+}
+
+@media screen and (max-width: 767px) {
+    .title {
+        margin-bottom: 24px;
+    }
+
+    .container {
+        padding: 60px 15px;
+    }
 }

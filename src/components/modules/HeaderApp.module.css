@@ -1,17 +1,20 @@
 .header {
     width: 100%;
     min-height: 60px;
+    padding: 8px 0;
     background: lightblue;
+    flex: 0 0 auto;
 }
 
 .logo {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    background: #fff;
     overflow: hidden;
 }
 .img {
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .container {

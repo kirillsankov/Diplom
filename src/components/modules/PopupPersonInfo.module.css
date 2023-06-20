@@ -1,6 +1,5 @@
 .popup {
     width: 40vw;
-    height: 60vh;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -18,8 +17,12 @@
 .btn {
     padding: 16px 32px;
     background: lightblue;
-    border: none;
+    border: 3px solid lightblue;
     cursor: pointer;
+    transition: background-color .4s;
+}
+.btn:hover {
+    background: #fff;
 }
 .input {
     width: 100%;
@@ -47,4 +50,46 @@
 .popup__hidden {
     pointer-events: none;
     opacity: 0;
+}
+.iconClose {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 5px;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    background-color: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(45deg);
+    cursor: pointer;
+    border: 3px solid lightblue;
+    transition: background .4s,
+                border .4s;
+}
+.iconClose:hover {
+    background-color: #fff;
+}
+.iconClose:hover .iconClose__line{
+    background: lightblue;
+}
+.iconClose__line {
+    background: #fff;
+    position: absolute;
+    transition: background .4s;
+}
+.iconClose__line__top {
+    width: 20px;
+    height: 2px;
+}
+.iconClose__line__bottom {
+    width: 2px;
+    height: 20px;
+}
+@media screen and (max-width: 767px) {
+    .popup {
+        width: 90vw;
+    }
 }

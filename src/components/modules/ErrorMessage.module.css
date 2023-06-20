@@ -1,0 +1,26 @@
+.error {
+    background: #e33434;
+    padding: 40px;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 0 0 5px 5px;
+    transition: transform .4s;
+    width: 100%;
+    max-width: 1000px;
+    text-align: center;
+    z-index: 9999;
+}
+
+.showError {
+    transform: translate(-50%, 0);
+}
+
+@media screen and (max-width: 767px) {
+    .error {
+        width: 90vw;
+    }
+}
