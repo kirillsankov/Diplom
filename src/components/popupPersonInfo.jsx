@@ -26,6 +26,11 @@ const PopupPersonInfo = ({setName, isVisiblePopup, setIsVisiblePopup}) => {
                     <InputApp
                         maskChar=" "
                         mask={"aaaaaaaaaaaaaaaaaaaa"}
+                        formatChars = {
+                            {
+                                'a': '[A-Za-zА-Яа-я]',
+                            }
+                        }
                         value={inputName}
                         onChange={(e) => setInputName(e.target.value)}
                         className={classes.input}
