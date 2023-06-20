@@ -34,7 +34,7 @@ const HeaderApp = ({count, functionCount}, ...props) => {
     return (
         <header className={classes.header}>
             <div className={["container", classes.container].join(" ")}>
-                <a href="/">
+                <a href="/Diplom">
                     <div className={classes.logo}>
                         <img className={classes.img} src={logo} alt="img"/>
                     </div>
