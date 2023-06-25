@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Diplom/static/css/main.18b5b05b.css",
-    "main.js": "/Diplom/static/js/main.c69a9069.js",
+    "main.css": "/Diplom/static/css/main.eb6144f0.css",
+    "main.js": "/Diplom/static/js/main.843865bd.js",
     "static/media/Montserrat-SemiBold.woff2": "/Diplom/static/media/Montserrat-SemiBold.b5837b161389882292f7.woff2",
     "static/media/Montserrat-Regular.woff2": "/Diplom/static/media/Montserrat-Regular.fc432875c59da8482816.woff2",
     "static/media/logo.webp": "/Diplom/static/media/logo.6ca4bf57b2e06cf8fe36.webp",
     "index.html": "/Diplom/index.html",
-    "main.18b5b05b.css.map": "/Diplom/static/css/main.18b5b05b.css.map",
-    "main.c69a9069.js.map": "/Diplom/static/js/main.c69a9069.js.map"
+    "main.eb6144f0.css.map": "/Diplom/static/css/main.eb6144f0.css.map",
+    "main.843865bd.js.map": "/Diplom/static/js/main.843865bd.js.map"
   },
   "entrypoints": [
-    "static/css/main.18b5b05b.css",
-    "static/js/main.c69a9069.js"
+    "static/css/main.eb6144f0.css",
+    "static/js/main.843865bd.js"
   ]
 }
