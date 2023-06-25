@@ -20,6 +20,7 @@ const Task_7 = ({functionCount},...props) => {
     const [aveCont, setAveCont] = useState('');
     const [generalAssessment, setGeneralAssessment] = useState('');
     const [rez, setRez] = useState(true);
+    const [taskNumber, setTaskNumber] = useState(null);
 
     const [error, setError] = useState(false);
     const [messageError, setMessageError] = useState('');
@@ -34,35 +35,46 @@ const Task_7 = ({functionCount},...props) => {
     const [dPlus, setDPlus] = useState(0);
     const [numberE, setE] = useState(0);
 
-
-
     useMemo(() => {
         getJson().then(json => {
-            let numberTask = randomIntFromInterval(0, json.arr.length - 1);
-            setString(json.arr[numberTask])
+
+            if(!taskNumber && taskNumber !== 0) return
+
+            setString(json.arr[taskNumber].task)
+
+            let bNumbers = json.arr[taskNumber].bRange.map(item => parseInt(item));
+
+            let numberA = randomIntFromInterval(2, 20);
+            let numberAPlus = randomIntFromInterval(3, numberA - 1);
+            let numberB = randomIntFromInterval(2, 20);
+            let numberBPlus = randomIntFromInterval(3, numberB - 1);
+            let numberC = randomIntFromInterval(...bNumbers);
+            let numberCPlus = randomIntFromInterval(2, numberC - 1);
+            let numberD = randomIntFromInterval(...bNumbers);
+            let numberDPlus = randomIntFromInterval(2, numberD - 1);
+            let numberE = randomIntFromInterval(2, 12);
+
+
+
+            setA(numberA);
+            setAPlus(numberAPlus);
+            setB(numberB);
+            setBPlus(numberBPlus);
+            setC(numberC);
+            setCPlus(numberCPlus)
+            setD(numberD);
+            setDPlus(numberDPlus);
+            setE(numberE);
+        });
+    }, [taskNumber])
+
+    useMemo(() => {
+
+        getJson().then(json => {
+            let randomNuber = randomIntFromInterval(0, json.arr.length - 1);
+            setTaskNumber(randomIntFromInterval(0, randomNuber));
         });
 
-        let numberA = randomIntFromInterval(2, 20);
-        let numberAPlus = randomIntFromInterval(3, numberA - 1);
-        let numberB = randomIntFromInterval(2, 20);
-        let numberBPlus = randomIntFromInterval(3, numberB - 1);
-        let numberC = randomIntFromInterval(2, 30);
-        let numberCPlus = randomIntFromInterval(2, numberC - 1);
-        let numberD = randomIntFromInterval(2, 30);
-        let numberDPlus = randomIntFromInterval(2, numberD - 1);
-        let numberE = randomIntFromInterval(2, 12);
-
-
-
-        setA(numberA);
-        setAPlus(numberAPlus);
-        setB(numberB);
-        setBPlus(numberBPlus);
-        setC(numberC);
-        setCPlus(numberCPlus)
-        setD(numberD);
-        setDPlus(numberDPlus);
-        setE(numberE);
     }, [])
 
     useMemo(() => {
@@ -89,18 +101,6 @@ const Task_7 = ({functionCount},...props) => {
             newString = newString.replace('E', `${numberE}`);
             setString(newString);
         }
-    }
-    function getEstimate(utilization, content, timePerTrans) {
-        if(utilization < 0.50 || content > 30 || timePerTrans > 30) {
-            return 'низкая';
-        } else if(utilization < 0.60 || content > 15 || timePerTrans > 15) {
-            return 'ниже средней';
-        } else if(utilization < 0.70 || content > 10 || timePerTrans > 10) {
-            return 'средняя';
-        } else if(utilization < 0.80 || content > 5 || timePerTrans > 5) {
-            return 'выше средней';
-        }
-        return 'высокая';
     }
 
     function showError(string) {
@@ -129,12 +129,14 @@ const Task_7 = ({functionCount},...props) => {
         let json = await getJson();
         let result = await Calculations.getResult(json.programm , a, aPlus, b, bPlus, c, cPlus, d, dPlus, numberE, 7);
         console.log(result);
-        console.log(getEstimate(result.utilization, result.content, result.timePerTrans))
+       let getResult = new Function('utilization', 'content', 'timePerTrans', json.arr[taskNumber].compoAssessment);
+       console.log(getResult(result.utilization, result.content, result.timePerTrans));
         if((result.utilization + 0.1 > parseFloat(util) && result.utilization - 0.1 < parseFloat(util))
             && (result.content + 2 > parseFloat(aveCont) && result.content - 2 < parseFloat(aveCont))
             && (result.timePerTrans + 30 > parseFloat(aveTime) && result.timePerTrans - 30 < parseFloat(aveTime))) {
+
             functionCount(parseInt(localStorage.getItem('countSuccessAnswer'))  + 1);
-            route('/SuccessPage');
+            route('/SuccessPage', {state: {estimate: getResult(result.utilization, result.content, result.timePerTrans) === generalAssessment.value}});
         } else {
             setRez(true);
             showError('Задание решено не верно, попробуй еще раз');

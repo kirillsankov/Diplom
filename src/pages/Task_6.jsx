@@ -25,33 +25,43 @@ const Task_6 = ({functionCount},...props) => {
     const [rez, setRez] = useState(true);
     const [error, setError] = useState(false);
     const [messageError, setMessageError] = useState('');
+    const [taskNumber, setTaskNumber] = useState(null);
 
     const [a, setA] = useState(0);
     const [aPlus, setAPlus] = useState(0);
     const [b, setB] = useState(0);
     const [bPlus, setBPlus] = useState(0);
     const [c, setC] = useState(0);
+    useMemo(() => {
+        getJson().then(json => {
+
+            if(!taskNumber && taskNumber !== 0) return
+
+            setString(json.arr[taskNumber].task)
+
+           let bNumbers = json.arr[taskNumber].bRange.map(item => parseInt(item));
+
+            let numberA = randomIntFromInterval(2, 20);
+            let numberAPlus = randomIntFromInterval(3, numberA - 1);
+            let numberB = randomIntFromInterval(...bNumbers);
+            let numberBPlus = randomIntFromInterval(3, numberB - 1);
+            let numberC = randomIntFromInterval(2, 12);
+
+
+
+            setA(numberA);
+            setAPlus(numberAPlus);
+            setB(numberB);
+            setBPlus(numberBPlus);
+            setC(numberC);
+        });
+    }, [taskNumber])
 
     useMemo(() => {
         getJson().then(json => {
-            console.log(json);
-            let numberTask = randomIntFromInterval(0, json.arr.length - 1);
-            setString(json.arr[numberTask])
+            let randomNuber = randomIntFromInterval(0, json.arr.length - 1);
+            setTaskNumber(randomIntFromInterval(0, randomNuber));
         });
-
-        let numberA = randomIntFromInterval(2, 20);
-        let numberAPlus = randomIntFromInterval(3, numberA - 1);
-        let numberB = randomIntFromInterval(2, 20);
-        let numberBPlus = randomIntFromInterval(3, numberB - 1);
-        let numberC = randomIntFromInterval(2, 12);
-
-
-
-        setA(numberA);
-        setAPlus(numberAPlus);
-        setB(numberB);
-        setBPlus(numberBPlus);
-        setC(numberC);
     }, [])
 
     useMemo(() => {
@@ -75,18 +85,6 @@ const Task_6 = ({functionCount},...props) => {
             setString(newString);
         }
     }
-    function getEstimate(utilization, content, timePerTrans) {
-        if(utilization < 0.50 || content > 30 || timePerTrans > 30) {
-            return 'низкая';
-        } else if(utilization < 0.60 || content > 15 || timePerTrans > 15) {
-            return 'ниже средней';
-        } else if(utilization < 0.70 || content > 10 || timePerTrans > 10) {
-            return 'средняя';
-        } else if(utilization < 0.80 || content > 5 || timePerTrans > 5) {
-            return 'выше средней';
-        }
-        return 'высокая';
-    }
 
     function showError(string) {
         setMessageError(string);
@@ -98,7 +96,7 @@ const Task_6 = ({functionCount},...props) => {
     }
     function checkValidate() {
         let fnCheck = Calculations.validateField;
-        if(!(fnCheck(util) && fnCheck(aveCont) && fnCheck(aveTime))) {
+        if(!(fnCheck(util) && fnCheck(aveCont) && fnCheck(aveTime) && generalAssessment !== '')) {
             showError('Некорректные данные');
 
             return true;
@@ -115,12 +113,13 @@ const Task_6 = ({functionCount},...props) => {
         let json = await getJson();
         let result = await Calculations.getResult(json.programm ,a, aPlus, b, bPlus, c, null, null, null, null, 6);
         console.log(result);
-        console.log(getEstimate(result.utilization, result.content, result.timePerTrans))
+       let getResult = new Function('utilization', 'content', 'timePerTrans', json.arr[taskNumber].compoAssessment);
+        console.log(getResult(result.utilization, result.content, result.timePerTrans))
         if((result.utilization + 0.1 > parseFloat(util) && result.utilization - 0.1 < parseFloat(util))
             && (result.content + 2 > parseFloat(aveCont) && result.content - 2 < parseFloat(aveCont))
             && (result.timePerTrans + 20 > parseFloat(aveTime) && result.timePerTrans - 20 < parseFloat(aveTime))) {
             functionCount(parseInt(localStorage.getItem('countSuccessAnswer'))  + 1);
-            route('/SuccessPage');
+            route('/SuccessPage', {state: {estimate: getResult(result.utilization, result.content, result.timePerTrans) === generalAssessment.value}});
         } else {
             setRez(true);
 

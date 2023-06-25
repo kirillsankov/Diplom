@@ -31,7 +31,6 @@ const Task_8 = ({functionCount},...props) => {
 
     useMemo(() => {
         getJson().then(json => {
-            console.log(json);
             let numberTask = randomIntFromInterval(0, json.arr.length - 1);
             setString(json.arr[numberTask])
         });
@@ -72,13 +71,6 @@ const Task_8 = ({functionCount},...props) => {
             setString(newString);
         }
     }
-    function showError() {
-        setError(true);
-
-        setTimeout(() => {
-            setError(false)
-        }, 5000);
-    }
 
     function showError(string) {
         setMessageError(string);
@@ -109,7 +101,7 @@ const Task_8 = ({functionCount},...props) => {
         console.log(result);
         if(result + 1 >= parseInt(count) && result - 1 <= parseInt(count)) {
             functionCount(parseInt(localStorage.getItem('countSuccessAnswer'))  + 1);
-            route('/SuccessPage');
+            route('/SuccessPage', {state: {estimate: "empty"}});
         } else {
             setRez(true);
 
@@ -129,7 +121,6 @@ const Task_8 = ({functionCount},...props) => {
             <TaskText className={classes.task__wrapper}>
                 {string}
             </TaskText>
-            <p className={classes.task__warning}>Будем считать, что система работает без перегрузки, если сердняя очередь 10 человек и меньше, а среднее время ожидания в очереди 20 минут и меньше</p>
             <form className={[classes.task__form, classes.task__form__full].join(' ')} action="">
                 <div className="">
                     <p className={classes.task__label}>Введите оптимальное количество заявок:</p>

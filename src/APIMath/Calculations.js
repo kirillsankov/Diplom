@@ -67,15 +67,22 @@ export default class Calculations {
         let newProgramm;
 
         let i = 1;
+        let li = 1 / a * b;
+        let resultNumber = li / i
+
         newProgramm = addNumberToProgram(i++, program);
         let work = await sendResponse(newProgramm);
         console.log(work);
+        console.log(resultNumber);
 
-        while(work.content > 10 || work.timePerTrans > 20) {
+        while(resultNumber >= 1) {
+            resultNumber = li / i;
             newProgramm = addNumberToProgram(i++, program);
+
 
             work = await sendResponse(newProgramm);
             console.log(work);
+            console.log(resultNumber);
         }
 
         return --i;

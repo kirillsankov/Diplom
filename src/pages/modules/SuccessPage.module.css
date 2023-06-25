@@ -19,3 +19,11 @@
     column-gap: 16px;
     margin: 0 auto;
 }
+
+.success{
+    color: greenyellow;
+}
+
+.error {
+    color: red;
+}
