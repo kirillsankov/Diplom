@@ -10,8 +10,10 @@ const Home = () => {
 
     return (
         <div className={['container', classes.wrapper].join(' ')}>
-            <H1Anim className={classes.title}>Привет</H1Anim>
-            <PAnim className={classes.description}>Ты зашел на страницу с генератором задач по имитационному моделированию</PAnim>
+            <H1Anim className={classes.title}>Здравствуйте</H1Anim>
+            <PAnim className={classes.description}>Вы зашли на страницу с генератором задач по имитационному
+                моделированию, для поддержки курса компьютерного моделирования.
+            </PAnim>
             <BtnApp onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

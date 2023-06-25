@@ -1,5 +1,5 @@
 @font-face {
-    font-family: "Montserrat";
+        font-family: "Montserrat";
     src: local("Montserrat"),
     url("./fonts/Montserrat-Regular.woff2") format("woff2");
     font-weight: 400;
@@ -40,7 +40,7 @@ img {
 .flex-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
 }
 body, html, #root {
     height: 100%;

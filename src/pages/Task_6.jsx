@@ -134,7 +134,7 @@ const Task_6 = ({functionCount},...props) => {
                 e.preventDefault();
                 route('/task')
             }} className={classes.task__btBack} href="#">Вернутся ко всем задачам</a>
-            <h1 className={classes.title}>Задача №6</h1>
+            <h1 className={classes.title}>Задача №1</h1>
             <TaskText className={classes.task__wrapper}>
                 {string}
             </TaskText>

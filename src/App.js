@@ -2,7 +2,7 @@
 import React, {useMemo} from "react";
 import './style.css'
 import Home from "./pages/Home";
-import {BrowserRouter, Route, Routes, Link, HashRouter} from "react-router-dom";
+import {Route, Routes, HashRouter} from "react-router-dom";
 import HeaderApp from "./components/HeaderApp";
 import FooterApp from "./components/FooterApp";
 import SuccessPage from "./pages/SuccessPage";
@@ -27,9 +27,9 @@ function App() {
               <HashRouter>
                   <Routes>
                       <Route index  path="/" element={<Home/>}/>
-                      <Route exact index  path="/task/6" element={<Task_6 functionCount={setSuccessCount}/>}/>
-                      <Route exact index  path="/task/7" element={<Task_7 functionCount={setSuccessCount}/>}/>
-                      <Route exact index  path="/task/8" element={<Task_8 functionCount={setSuccessCount}/>}/>
+                      <Route exact index  path="/task/1" element={<Task_6 functionCount={setSuccessCount}/>}/>
+                      <Route exact index  path="/task/2" element={<Task_7 functionCount={setSuccessCount}/>}/>
+                      <Route exact index  path="/task/3" element={<Task_8 functionCount={setSuccessCount}/>}/>
                       <Route exact index  path="/task/" element={<TaskList/>}/>
                       <Route index  path="/SuccessPage" element={<SuccessPage/>}/>
                   </Routes>

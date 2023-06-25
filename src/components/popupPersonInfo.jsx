@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import classes from './modules/PopupPersonInfo.module.css'
 import InputApp from "./InputApp";
 
@@ -37,7 +37,7 @@ const PopupPersonInfo = ({setName, isVisiblePopup, setIsVisiblePopup}) => {
                         type="text"
                     />
                 </form>
-                <input onClick={() => resetName()} className={classes.btn} type="submit" value="Сохранить новное имя"/>
+                <input onClick={() => resetName()} className={classes.btn} type="submit" value="Сохранить новое имя"/>
                 <div onClick={() => closePopup()} className={classes.iconClose}>
                     <div className={[classes.iconClose__line, classes.iconClose__line__top].join(" ")}></div>
                     <div className={[classes.iconClose__line, classes.iconClose__line__bottom].join(" ")}></div>
